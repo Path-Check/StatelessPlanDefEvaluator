@@ -5,6 +5,7 @@ plugins {
 
 	id("org.springframework.boot") version "2.7.7"
 	kotlin("plugin.spring") version "1.6.21"
+	war
 }
 
 group = "org.pathcheck"
