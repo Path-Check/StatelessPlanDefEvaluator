@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Stateless PlanDefinition Evaluator</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <h1>Stateless PlanDefinition Evaluator</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <form method="POST" id="data-form">
+                    <div id="plandef-group" class="form-group">
+                        <label for="planDefinitionID">PlanDefinition ID: </label>
+                        <input type="text" class="form-control" id="planDefinitionID" name="planDefinitionID" placeholder="Test-PlanDefinitionCondition" value="Test-PlanDefinitionCondition" />
+                    </div>
+
+                    <div id="patient-group" class="form-group">
+                        <label for="patientID">Patient ID</label>
+                        <input type="text" class="form-control" id="patientID" name="patientID" placeholder="Test-Patient" value="Test-Patient" />
+                    </div>
+
+                    <div id="encounter-group" class="form-group">
+                        <label for="encounterID">Encounter ID</label>
+                        <input type="text" class="form-control" id="encounterID" name="encounterID" placeholder="Test-Encounter" value="Test-Encounter"/>
+                    </div>
+
+                    <div id="data-group" class="form-group">
+                        <label for="data">Data</label>
+                        <textarea class="form-control" id="data" name="data" rows="40" cols="55">
+{
+  "resourceType": "Bundle",
+  "id": "ConditionalPlanDef-Data-1.0.0",
+  "type": "transaction",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "Test-Patient",
+        "gender": "female"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/ConditionalPlanDef-Test-Patient"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "Test-Encounter",
+        "status": "in-progress",
+        "subject": {
+          "reference": "Patient/Test-Patient"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/ConditionalPlanDef-Test-Encouter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ActivityDefinition",
+        "id": "MedicationRequest-1",
+        "url": "http://localhost/ActivityDefinition/MedicationRequest-1",
+        "status": "active",
+        "kind": "MedicationRequest",
+        "productCodeableConcept": {
+          "text": "Medication 1"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ActivityDefinition/ConditionalPlanDef-MedicationRequest-1.0.0"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "PlanDefinition",
+        "id": "Test-PlanDefinitionCondition",
+        "status": "active",
+        "action": [
+          {
+            "definitionCanonical": "http://localhost/ActivityDefinition/MedicationRequest-1"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "PlanDefinition/ConditionalPlanDef-PlanDefinition-1.0.0"
+      }
+    }
+  ]
+}
+                        </textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        Submit
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+                <label for="data">Resulting Care Plan</label>
+                <textarea class="form-control"  id="resultingPlan" name="resultingPlan" rows="51" cols="55">
+
+                </textarea>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $("#data-form").on("submit", function (e) {
+            e.preventDefault();
+
+            let fhirPayload = JSON.parse($('#data').val());
+            let msg = {
+                patientID: $('#patientID').val(),
+                encounterID: $('#encounterID').val(),
+                planDefinitionID: $('#planDefinitionID').val(),
+                data: fhirPayload
+            }
+
+            console.log(msg);
+
+            $.ajax({
+                url: '/evaluate', // url where to submit the request
+                type : "POST", // type of action POST || GET
+                contentType: "application/json; charset=utf-8",
+                data : JSON.stringify(msg),
+                success : function(result) {
+                    console.log(result);
+                    $('#resultingPlan').val(JSON.stringify(result, null, 2));
+                },
+                error: function(xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+
+        });
+    </script>
+</body>
+</html>

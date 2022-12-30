@@ -8,7 +8,9 @@ class ServletInitializer : SpringBootServletInitializer() {
 	override fun configure(application: SpringApplicationBuilder): SpringApplicationBuilder {
 		return application.sources(
 			WebApplication::class.java,
-			RestController::class.java
+			JacksonConfig::class.java,
+			UIController::class.java,
+			RestController::class.java,
 		)
 	}
 

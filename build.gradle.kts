@@ -16,10 +16,13 @@ repositories {
 }
 
 dependencies {
+	// forces jackson version of 2.14
 	implementation("com.fasterxml.jackson:jackson-bom:2.14.1")
 
+	// forces jackson for the CQL Model Info
 	implementation("info.cqframework:model-jackson:2.4.0")
 
+	// plan definiton evaluate
 	implementation("org.opencds.cqf.cql:engine:2.4.0")
 	implementation("org.opencds.cqf.cql:engine.jackson:2.4.0")
 	implementation("org.opencds.cqf.cql:engine.fhir:2.4.0")
@@ -27,10 +30,16 @@ dependencies {
 	implementation("org.opencds.cqf.cql:evaluator.builder:2.4.0")
 	implementation("org.opencds.cqf.cql:evaluator.plandefinition:2.4.0")
 
+	// fhir data objects
 	implementation("ca.uhn.hapi.fhir:org.hl7.fhir.r4:5.6.68")
 	implementation("ca.uhn.hapi.fhir:hapi-fhir-structures-r4:6.2.1")
 
+	// html templates
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf:2.7.7")
+
 	implementation("org.springframework.boot:spring-boot-starter-web:2.7.7")
+	// hot loading
+	developmentOnly("org.springframework.boot:spring-boot-devtools:2.7.7")
 
 	testImplementation(kotlin("test"))
 	testImplementation("org.skyscreamer:jsonassert:1.5.1")
