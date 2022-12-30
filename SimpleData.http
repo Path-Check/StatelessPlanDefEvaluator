@@ -1,5 +1,6 @@
 ### Post 'Simple Data"
-POST http://localhost:8080/evaluate
+#POST http://localhost:8080/evaluate
+POST https://plan-def-evaluator.pathcheck.org/evaluate
 Content-Type: application/json
 
 {
