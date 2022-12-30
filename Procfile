@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/*.war
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/StatelessPlanDefEvaluator-1.0-SNAPSHOT.war
