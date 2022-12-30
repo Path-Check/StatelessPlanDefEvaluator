@@ -1,0 +1,64 @@
+{
+  "resourceType": "Bundle",
+  "id": "ConditionalPlanDef-Data-1.0.0",
+  "type": "transaction",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "Test-Patient",
+        "gender": "female"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/ConditionalPlanDef-Test-Patient"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "Test-Encounter",
+        "status": "in-progress",
+        "subject": {
+          "reference": "Patient/Test-Patient"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/ConditionalPlanDef-Test-Encouter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ActivityDefinition",
+        "id": "MedicationRequest-1",
+        "url": "http://localhost/ActivityDefinition/MedicationRequest-1",
+        "status": "active",
+        "kind": "MedicationRequest",
+        "productCodeableConcept": {
+          "text": "Medication 1"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ActivityDefinition/ConditionalPlanDef-MedicationRequest-1.0.0"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "PlanDefinition",
+        "id": "Test-PlanDefinitionCondition",
+        "status": "active",
+        "action": [
+          {
+            "definitionCanonical": "http://localhost/ActivityDefinition/MedicationRequest-1"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "PlanDefinition/ConditionalPlanDef-PlanDefinition-1.0.0"
+      }
+    }
+  ]
+}

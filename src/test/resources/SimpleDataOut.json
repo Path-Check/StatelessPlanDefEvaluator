@@ -1,0 +1,43 @@
+{
+  "resourceType": "CarePlan",
+  "contained": [ {
+    "resourceType": "RequestGroup",
+    "id": "Test-PlanDefinitionCondition",
+    "status": "draft",
+    "intent": "proposal",
+    "subject": {
+      "reference": "Test-Patient"
+    },
+    "encounter": {
+      "reference": "Test-Encounter"
+    },
+    "action": [ {
+      "resource": {
+        "reference": "MedicationRequest/MedicationRequest-1"
+      }
+    } ]
+  }, {
+    "resourceType": "MedicationRequest",
+    "id": "MedicationRequest-1",
+    "intent": "order",
+    "medicationCodeableConcept": {
+      "text": "Medication 1"
+    },
+    "subject": {
+      "reference": "Test-Patient"
+    }
+  } ],
+  "status": "draft",
+  "intent": "proposal",
+  "subject": {
+    "reference": "Test-Patient"
+  },
+  "encounter": {
+    "reference": "Test-Encounter"
+  },
+  "activity": [ {
+    "reference": {
+      "reference": "#Test-PlanDefinitionCondition"
+    }
+  } ]
+}
