@@ -2,6 +2,10 @@
 
 This is a FHIR PlanDefinition Evaluator as a stateless webservice. Every call requires users to send the full dataset for evaluation. Nothing is saved.  
 
+# Live Instance
+
+Visit [plan-def-evaluator.pathcheck.org](https://plan-def-evaluator.pathcheck.org/) to see the latest version
+
 # Running
 
 This is a Spring boot project. Run with: 
