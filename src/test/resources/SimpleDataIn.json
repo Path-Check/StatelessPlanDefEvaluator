@@ -47,7 +47,8 @@
     {
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "Test-PlanDefinitionCondition",
+        "id": "Test-PlanDefinitionCondition-1.0.0",
+        "url": "http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0",
         "status": "active",
         "action": [
           {

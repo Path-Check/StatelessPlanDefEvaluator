@@ -2,8 +2,6 @@ package org.pathcheck.statelessplandefevaluator
 
 import org.hl7.fhir.instance.model.api.IBaseResource
 import org.hl7.fhir.r4.model.Bundle
-import org.hl7.fhir.r4.model.HumanName
-import org.hl7.fhir.r4.model.Patient
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -13,16 +11,21 @@ class RestController {
 
     data class PlanDefEvaluate(
         val data: Bundle,
-        val planDefinitionID: String,
-        val patientID: String,
+        val planDefinitionUrl: String,
+        val subject: String,
         val encounterID: String
     )
 
     @PostMapping("/evaluate")
-    fun verify(@RequestBody input: PlanDefEvaluate): IBaseResource? {
+    fun evaluate(@RequestBody input: PlanDefEvaluate): IBaseResource? {
+
+        println(input.planDefinitionUrl)
+        println(input.subject)
+        println(input.encounterID)
+
         return PlanDefinitionOperator(input.data).apply(
-            input.planDefinitionID,
-            input.patientID,
+            input.planDefinitionUrl,
+            input.subject,
             input.encounterID
         )
     }

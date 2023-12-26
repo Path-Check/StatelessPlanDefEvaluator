@@ -18,13 +18,13 @@
             <div class="col-xs-12 col-sm-6">
                 <form method="POST" id="data-form">
                     <div id="plandef-group" class="form-group">
-                        <label for="planDefinitionID">PlanDefinition ID: </label>
-                        <input type="text" class="form-control" id="planDefinitionID" name="planDefinitionID" placeholder="Test-PlanDefinitionCondition" value="Test-PlanDefinitionCondition" />
+                        <label for="planDefinitionUrl">PlanDefinition URL</label>
+                        <input type="text" class="form-control" id="planDefinitionUrl" name="planDefinitionUrl" placeholder="http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0" value="http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0" />
                     </div>
 
                     <div id="patient-group" class="form-group">
-                        <label for="patientID">Patient ID</label>
-                        <input type="text" class="form-control" id="patientID" name="patientID" placeholder="Test-Patient" value="Test-Patient" />
+                        <label for="subject">Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Patient/Test-Patient" value="Patient/Test-Patient" />
                     </div>
 
                     <div id="encounter-group" class="form-group">
@@ -84,7 +84,8 @@
     {
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "Test-PlanDefinitionCondition",
+        "id": "Test-PlanDefinitionCondition-1.0.0",
+        "url": "http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0",
         "status": "active",
         "action": [
           {
@@ -123,9 +124,9 @@
 
             let fhirPayload = JSON.parse($('#data').val());
             let msg = {
-                patientID: $('#patientID').val(),
                 encounterID: $('#encounterID').val(),
-                planDefinitionID: $('#planDefinitionID').val(),
+                subject: $('#subject').val(),
+                planDefinitionUrl: $('#planDefinitionUrl').val(),
                 data: fhirPayload
             }
 
@@ -144,7 +145,6 @@
                     console.log(xhr, resp, text);
                 }
             })
-
         });
     </script>
 </body>

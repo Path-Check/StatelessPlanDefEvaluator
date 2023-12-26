@@ -1,43 +1,61 @@
 {
   "resourceType": "CarePlan",
-  "contained": [ {
-    "resourceType": "RequestGroup",
-    "id": "Test-PlanDefinitionCondition",
-    "status": "draft",
-    "intent": "proposal",
-    "subject": {
-      "reference": "Test-Patient"
+  "id": "4acd6ee8-7459-40c4-b16e-0b54a6f5794a",
+  "contained": [
+    {
+      "resourceType": "RequestGroup",
+      "id": "4acd6ee8-7459-40c4-b16e-0b54a6f5794a",
+      "instantiatesCanonical": [
+        "http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0"
+      ],
+      "status": "draft",
+      "intent": "proposal",
+      "subject": {
+        "reference": "Patient/Test-Patient"
+      },
+      "encounter": {
+        "reference": "Test-Encounter"
+      },
+      "action": [
+        {
+          "resource": {
+            "reference": "MedicationRequest/3acd6ee8-7459-40c4-b16e-0b54a6f5794a"
+          }
+        }
+      ]
     },
-    "encounter": {
-      "reference": "Test-Encounter"
-    },
-    "action": [ {
-      "resource": {
-        "reference": "MedicationRequest/MedicationRequest-1"
-      }
-    } ]
-  }, {
-    "resourceType": "MedicationRequest",
-    "id": "MedicationRequest-1",
-    "intent": "order",
-    "medicationCodeableConcept": {
-      "text": "Medication 1"
-    },
-    "subject": {
-      "reference": "Test-Patient"
+    {
+      "resourceType": "MedicationRequest",
+      "id": "3acd6ee8-7459-40c4-b16e-0b54a6f5794a",
+      "status": "draft",
+      "intent": "order",
+      "medicationCodeableConcept": {
+        "text": "Medication 1"
+      },
+      "subject": {
+        "reference": "Patient/Test-Patient"
+      },
+      "instantiatesCanonical": [
+        "http://localhost/ActivityDefinition/MedicationRequest-1"
+      ]
     }
-  } ],
+  ],
+  "instantiatesCanonical": [
+    "http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0"
+  ],
   "status": "draft",
   "intent": "proposal",
   "subject": {
-    "reference": "Test-Patient"
+    "reference": "Patient/Test-Patient"
   },
   "encounter": {
     "reference": "Test-Encounter"
   },
-  "activity": [ {
-    "reference": {
-      "reference": "#Test-PlanDefinitionCondition"
+  "activity": [
+    {
+      "reference": {
+        "reference": "#RequestGroup/4acd6ee8-7459-40c4-b16e-0b54a6f5794a"
+      }
     }
-  } ]
+  ]
 }

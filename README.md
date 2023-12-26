@@ -16,8 +16,8 @@ The server listens to a POST in `/evaluate` with the following payload:
 
 ```json
 {
-  "planDefinitionID": "Test-PlanDefinitionCondition",
-  "patientID": "Test-Patient",
+  "planDefinitionUrl": "http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0",
+  "subject": "Patient/Test-Patient",
   "encounterID": "Test-Encounter", 
   "data": {
     // JSON BUNDLE 
