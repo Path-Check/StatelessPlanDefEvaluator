@@ -3,6 +3,24 @@
 <head>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    <style type="text/css" media="screen">
+        #data {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            width: 100%;
+            height: 100%;
+            min-height: 65vh;
+        }
+        #resultingPlan {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            width: 100%;
+            height: 100%;
+            min-height: 85vh;
+        }
+    </style>
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Stateless PlanDefinition Evaluator</title>
 </head>
@@ -17,25 +35,10 @@
         <div class="row">
             <div class="col-xs-12 col-sm-6">
                 <form method="POST" id="data-form">
-                    <div id="plandef-group" class="form-group">
-                        <label for="planDefinitionUrl">PlanDefinition URL</label>
-                        <input type="text" class="form-control" id="planDefinitionUrl" name="planDefinitionUrl" placeholder="http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0" value="http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0" />
-                    </div>
-
-                    <div id="patient-group" class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Patient/Test-Patient" value="Patient/Test-Patient" />
-                    </div>
-
-                    <div id="encounter-group" class="form-group">
-                        <label for="encounterID">Encounter ID</label>
-                        <input type="text" class="form-control" id="encounterID" name="encounterID" placeholder="Test-Encounter" value="Test-Encounter"/>
-                    </div>
-
                     <div id="data-group" class="form-group">
-                        <label for="data">Data</label>
-                        <textarea class="form-control" id="data" name="data" rows="40" cols="55">
-{
+                        <label for="data">With Repository</label>
+
+                        <div id="data" name="data">{
   "resourceType": "Bundle",
   "id": "ConditionalPlanDef-Data-1.0.0",
   "type": "transaction",
@@ -100,7 +103,22 @@
     }
   ]
 }
-                        </textarea>
+                        </div>
+                    </div>
+
+                    <div id="plandef-group" class="form-group">
+                        <label for="planDefinitionUrl">Run PlanDefinition URL</label>
+                        <input type="text" class="form-control" id="planDefinitionUrl" name="planDefinitionUrl" placeholder="http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0" value="http://localhost/PlanDefinition/Test-PlanDefinitionCondition-1.0.0" />
+                    </div>
+
+                    <div id="patient-group" class="form-group">
+                        <label for="subject">On Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Patient/Test-Patient" value="Patient/Test-Patient" />
+                    </div>
+
+                    <div id="encounter-group" class="form-group">
+                        <label for="encounterID">At Encounter ID</label>
+                        <input type="text" class="form-control" id="encounterID" name="encounterID" placeholder="Test-Encounter" value="Test-Encounter"/>
                     </div>
 
                     <button type="submit" class="btn btn-success">
@@ -110,19 +128,26 @@
             </div>
 
             <div class="col-xs-12 col-sm-6">
-                <label for="data">Resulting Care Plan</label>
-                <textarea class="form-control"  id="resultingPlan" name="resultingPlan" rows="51" cols="55">
-
-                </textarea>
+                <label for="resultingPlan">Resulting Care Plan</label>
+                <div id="resultingPlan" name="resultingPlan">{}</div>
             </div>
         </div>
     </div>
 
-    <script type="text/javascript">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var editor = ace.edit("data");
+        editor.setTheme("ace/theme/textmate");
+        editor.session.setMode("ace/mode/json");
+
+        var editor2 = ace.edit("resultingPlan");
+        editor2.setTheme("ace/theme/textmate");
+        editor2.session.setMode("ace/mode/json");
+
         $("#data-form").on("submit", function (e) {
             e.preventDefault();
 
-            let fhirPayload = JSON.parse($('#data').val());
+            let fhirPayload = JSON.parse(editor.getValue());
             let msg = {
                 encounterID: $('#encounterID').val(),
                 subject: $('#subject').val(),
@@ -130,16 +155,13 @@
                 data: fhirPayload
             }
 
-            console.log(msg);
-
             $.ajax({
                 url: '/evaluate', // url where to submit the request
                 type : "POST", // type of action POST || GET
                 contentType: "application/json; charset=utf-8",
                 data : JSON.stringify(msg),
                 success : function(result) {
-                    console.log(result);
-                    $('#resultingPlan').val(JSON.stringify(result, null, 2));
+                    editor2.setValue(JSON.stringify(result, null, 2));
                 },
                 error: function(xhr, resp, text) {
                     console.log(xhr, resp, text);
